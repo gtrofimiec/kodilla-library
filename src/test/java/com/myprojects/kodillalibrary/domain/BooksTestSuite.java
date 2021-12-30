@@ -1,8 +1,6 @@
 package com.myprojects.kodillalibrary.domain;
 
 import com.myprojects.kodillalibrary.repositories.BooksRepository;
-import com.myprojects.kodillalibrary.repositories.BooksTitlesRepository;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +18,6 @@ public class BooksTestSuite {
     @Autowired
     BooksRepository booksRepository;
 
-    @Autowired
-    BooksTitlesRepository booksTitlesRepository;
-
-    @After
-    public void cleanUpDataBaseAfterEachTest() {
-        booksTitlesRepository.deleteAll();
-        booksRepository.deleteAll();
-    }
-
     @Test
     public void shouldFindAllBooks() {
 
@@ -42,6 +31,10 @@ public class BooksTestSuite {
 
         // Then
         assertEquals(2, booksRepository.findAll().size());
+
+        // Clean Up
+        booksRepository.deleteById(book1.getId());
+        booksRepository.deleteById(book2.getId());
     }
 
     @Test
@@ -60,6 +53,11 @@ public class BooksTestSuite {
         // Then
         assertNotNull(foundBook);
         assertEquals(id, foundBook.get().getId());
+
+        // Clean Up
+        booksRepository.deleteById(book1.getId());
+        booksRepository.deleteById(book2.getId());
+
     }
 
     @Test
@@ -86,6 +84,11 @@ public class BooksTestSuite {
         assertTrue(savedBook2.isPresent());
         assertEquals("destroyed", book1Status);
         assertEquals("borrowed", book2Status);
+
+        // Clean Up
+        booksRepository.deleteById(book1.getId());
+        booksRepository.deleteById(book2.getId());
+
     }
 
     @Test
@@ -106,5 +109,8 @@ public class BooksTestSuite {
         // Then
         assertEquals(Optional.empty(), removedBook);
         assertEquals(1, availableBooks);
+
+        // Clean Up
+        booksRepository.deleteById(book2.getId());
     }
 }

@@ -1,7 +1,6 @@
 package com.myprojects.kodillalibrary.domain;
 
 import com.myprojects.kodillalibrary.repositories.ReadersRepository;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,6 @@ public class ReadersTestSuite {
     @Autowired
     ReadersRepository readersRepository;
 
-    @After
-    public void cleanUpDataBaseAfterEachTest() {
-        readersRepository.deleteAll();
-    }
-
     @Test
     public void shouldFindAllReaders() {
 
@@ -38,6 +32,10 @@ public class ReadersTestSuite {
 
         // Then
         assertEquals(2, readersRepository.findAll().size());
+
+        // Clean Up
+        readersRepository.deleteById(reader1.getId());
+        readersRepository.deleteById(reader2.getId());
     }
 
     @Test
@@ -56,6 +54,10 @@ public class ReadersTestSuite {
         // Then
         assertNotNull(foundReader);
         assertEquals(id, foundReader.get().getId());
+
+        // Clean Up
+        readersRepository.deleteById(reader1.getId());
+        readersRepository.deleteById(reader2.getId());
     }
 
     @Test
@@ -82,6 +84,10 @@ public class ReadersTestSuite {
         assertTrue(savedReader2.isPresent());
         assertEquals(reader1.getName(), reader1Name);
         assertEquals(reader2.getName(), reader2Name);
+
+        // Clean Up
+        readersRepository.deleteById(reader1.getId());
+        readersRepository.deleteById(reader2.getId());
     }
 
     @Test
@@ -102,5 +108,8 @@ public class ReadersTestSuite {
         // Then
         assertEquals(Optional.empty(), removedReader);
         assertEquals(1, availableReaders);
+
+        // Clean Up
+        readersRepository.deleteById(reader2.getId());
     }
 }

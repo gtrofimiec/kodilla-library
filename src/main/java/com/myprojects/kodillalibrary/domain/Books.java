@@ -1,25 +1,24 @@
 package com.myprojects.kodillalibrary.domain;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="Books")
 public class Books {
 
-    public Books(BooksTitles title) {
-        this.title = title;
+    public Books(String bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
     @Id
     @GeneratedValue
+    @NotNull
     @Column(name="bookId")
     private Long id;
 
@@ -29,5 +28,8 @@ public class Books {
 
     @ManyToOne
     @JoinColumn(name = "titleId")
-    private BooksTitles title;
+    private BooksTitles bookTitle;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 }

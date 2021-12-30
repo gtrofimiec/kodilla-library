@@ -1,12 +1,16 @@
 package com.myprojects.kodillalibrary.domain.dtos;
 
-import com.myprojects.kodillalibrary.domain.BooksTitles;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class BooksDto {
 
     private Long id;
+    private String title;
+    private Long titleId;
     private String bookStatus;
-    private BooksTitles title;
 }

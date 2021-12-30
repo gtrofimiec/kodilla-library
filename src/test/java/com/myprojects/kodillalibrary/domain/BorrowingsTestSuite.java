@@ -3,14 +3,12 @@ package com.myprojects.kodillalibrary.domain;
 import com.myprojects.kodillalibrary.repositories.BooksRepository;
 import com.myprojects.kodillalibrary.repositories.BorrowingsRepository;
 import com.myprojects.kodillalibrary.repositories.ReadersRepository;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,19 +21,6 @@ public class BorrowingsTestSuite {
 
     @Autowired
     BorrowingsRepository borrowingsRepository;
-
-    @Autowired
-    BooksRepository booksRepository;
-
-    @Autowired
-    ReadersRepository readersRepository;
-
-    @After
-    public void cleanUpDataBaseAfterEachTest() {
-        borrowingsRepository.deleteAll();
-        booksRepository.deleteAll();
-        readersRepository.deleteAll();
-    }
 
     @Test
     public void shouldFindAllBorrowings() {
@@ -50,6 +35,10 @@ public class BorrowingsTestSuite {
 
         // Then
         assertEquals(2, borrowingsRepository.findAll().size());
+
+        // Clean Up
+        borrowingsRepository.deleteById(borrowing1.getId());
+        borrowingsRepository.deleteById(borrowing2.getId());
     }
 
     @Test
@@ -68,6 +57,10 @@ public class BorrowingsTestSuite {
         // Then
         assertNotNull(foundBorrowing);
         assertEquals(id, foundBorrowing.get().getId());
+
+        // Clean Up
+        borrowingsRepository.deleteById(borrowing1.getId());
+        borrowingsRepository.deleteById(borrowing2.getId());
     }
 
     @Test
@@ -94,6 +87,10 @@ public class BorrowingsTestSuite {
         assertTrue(savedBorrowing2.isPresent());
         assertEquals(borrowing1.getBorrowingDate(), borrowingDate1);
         assertEquals(borrowing2.getBorrowingDate(), borrowingDate2);
+
+        // Clean Up
+        borrowingsRepository.deleteById(borrowing1.getId());
+        borrowingsRepository.deleteById(borrowing2.getId());
     }
 
     @Test
@@ -114,5 +111,8 @@ public class BorrowingsTestSuite {
         // Then
         assertEquals(Optional.empty(), removedBorrowing);
         assertEquals(1, availableBorrowings);
+
+        // Clean Up
+        borrowingsRepository.deleteById(borrowing2.getId());
     }
 }
